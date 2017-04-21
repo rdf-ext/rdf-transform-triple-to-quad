@@ -1,8 +1,7 @@
 const rdf = require('rdf-data-model')
-const FilterStream = require('rdf-filter-stream')
 const Transform = require('readable-stream').Transform
 
-class SourceTripleToQuad extends Transform {
+class TripleToQuadTransform extends Transform {
   constructor (graph, options) {
     super()
 
@@ -26,10 +25,6 @@ class SourceTripleToQuad extends Transform {
 
     done()
   }
-
-  match (subject, predicate, object, graph) {
-    return new FilterStream(this, subject, predicate, object, graph)
-  }
 }
 
-module.exports = SourceTripleToQuad
+module.exports = TripleToQuadTransform

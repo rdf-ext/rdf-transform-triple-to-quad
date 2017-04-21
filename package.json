@@ -1,5 +1,5 @@
 {
-  "name": "rdf-source-triple-to-quad",
+  "name": "rdf-transform-triple-to-quad",
   "version": "0.9.0",
   "description": "RDFJS Source which transforms a triple stream to a quad stream",
   "main": "index.js",
@@ -9,30 +9,28 @@
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/rdf-ext/rdf-source-triple-to-quad.git"
+    "url": "git://github.com/rdf-ext/rdf-transform-triple-to-quad.git"
   },
   "keywords": [
     "rdf",
     "rdfjs",
     "rdf-ext",
-    "source",
-    "stream"
+    "stream",
+    "transform"
   ],
   "author": "Thomas Bergwinkl <bergi@axolotlfarm.org> (https://www.bergnet.org/people/bergi/card#me)",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/rdf-ext/rdf-source-triple-to-quad/issues"
+    "url": "https://github.com/rdf-ext/rdf-transform-triple-to-quad/issues"
   },
-  "homepage": "https://github.com/rdf-ext/rdf-source-triple-to-quad",
+  "homepage": "https://github.com/rdf-ext/rdf-transform-triple-to-quad",
   "dependencies": {
     "rdf-data-model": "git://github.com/rdf-ext/rdf-data-model.git#develop",
-    "rdf-filter-stream": "git://github.com/rdf-ext/rdf-filter-stream.git#develop",
     "readable-stream": "^2.2.3"
   },
   "devDependencies": {
     "mocha": "^3.2.0",
     "rdf-ext": "git://github.com/rdf-ext/rdf-ext.git#develop",
-    "rdf-source": "git://github.com/rdf-ext/rdf-source.git#develop",
     "standard": "^9.0.1"
   },
   "readmeFilename": "README.md"

@@ -2,9 +2,8 @@
 
 const assert = require('assert')
 const rdf = require('rdf-ext')
-const test = require('rdf-source/test')
 const Readable = require('readable-stream')
-const SourceTripleToQuad = require('..')
+const TripleToQuadTransform = require('..')
 
 function expectError (p) {
   return new Promise((resolve, reject) => {
@@ -19,10 +18,8 @@ function expectError (p) {
 }
 
 describe('rdf-source-triple-to-quad', () => {
-  test(SourceTripleToQuad)
-
   it('should implement a Readable and Writable interface', () => {
-    let tripleToQuad = new SourceTripleToQuad(rdf.namedNode('http://example.org/graph'))
+    let tripleToQuad = new TripleToQuadTransform(rdf.namedNode('http://example.org/graph'))
 
     assert(tripleToQuad.readable)
     assert(tripleToQuad.writable)
@@ -37,7 +34,7 @@ describe('rdf-source-triple-to-quad', () => {
 
     let errorStream = new ErrorStream()
 
-    let tripleToQuad = new SourceTripleToQuad(rdf.namedNode('http://example.org/graph-patched'))
+    let tripleToQuad = new TripleToQuadTransform(rdf.namedNode('http://example.org/graph-patched'))
 
     return expectError(() => {
       return rdf.dataset().import(errorStream.pipe(tripleToQuad))
@@ -63,7 +60,7 @@ describe('rdf-source-triple-to-quad', () => {
       )
     ])
 
-    let tripleToQuad = new SourceTripleToQuad(rdf.namedNode('http://example.org/graph-patched'))
+    let tripleToQuad = new TripleToQuadTransform(rdf.namedNode('http://example.org/graph-patched'))
 
     return rdf.dataset().import(sourceDataset.toStream().pipe(tripleToQuad)).then((actualDataset) => {
       assert(expectedDataset.equals(actualDataset))
