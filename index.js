@@ -11,7 +11,7 @@ class TripleToQuadTransform extends Transform {
     this._readableState.objectMode = true
 
     this.factory = options.factory || rdf
-    this.graph = graph || rdf.defaultGraph()
+    this.graph = graph || this.factory.defaultGraph()
 
     this.on('pipe', (input) => {
       input.on('error', (err) => {
