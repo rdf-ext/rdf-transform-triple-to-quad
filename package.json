@@ -26,8 +26,8 @@
   },
   "homepage": "https://github.com/rdf-ext/rdf-transform-triple-to-quad",
   "dependencies": {
-    "rdf-data-model": "^1.0.0",
-    "readable-stream": "^2.2.3"
+    "@rdfjs/data-model": "^1.1.2",
+    "readable-stream": "^3.5.0"
   },
   "devDependencies": {
     "mocha": "^3.2.0",

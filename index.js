@@ -1,4 +1,4 @@
-const rdf = require('rdf-data-model')
+const rdf = require('@rdfjs/data-model')
 const Transform = require('readable-stream').Transform
 
 class TripleToQuadTransform extends Transform {
