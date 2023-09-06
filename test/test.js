@@ -1,9 +1,9 @@
 /* global describe, it */
 
-const assert = require('assert')
-const rdf = require('rdf-ext')
-const Readable = require('readable-stream')
-const TripleToQuadTransform = require('..')
+import assert from 'assert'
+import rdf from 'rdf-ext'
+import Readable from 'readable-stream'
+import TripleToQuadTransform from '../index.js'
 
 function expectError (p) {
   return new Promise((resolve, reject) => {

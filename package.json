@@ -3,6 +3,7 @@
   "version": "1.0.2",
   "description": "RDFJS Source which transforms a triple stream to a quad stream",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "test": "standard && mocha"
   },
@@ -26,12 +27,12 @@
   },
   "homepage": "https://github.com/rdf-ext/rdf-transform-triple-to-quad",
   "dependencies": {
-    "@rdfjs/data-model": "^1.1.2",
-    "readable-stream": "^3.5.0"
+    "@rdfjs/data-model": "^2.0.1",
+    "readable-stream": "3 - 4"
   },
   "devDependencies": {
-    "mocha": "^3.2.0",
-    "rdf-ext": "^1.0.0",
-    "standard": "^9.0.1"
+    "mocha": "^10.2.0",
+    "rdf-ext": "^2.2.0",
+    "standard": "^17.1.0"
   }
 }
