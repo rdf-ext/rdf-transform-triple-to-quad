@@ -1,5 +1,5 @@
-const rdf = require('@rdfjs/data-model')
-const Transform = require('readable-stream').Transform
+import rdf from '@rdfjs/data-model'
+import { Transform } from 'readable-stream'
 
 class TripleToQuadTransform extends Transform {
   constructor (graph, options) {
@@ -27,4 +27,4 @@ class TripleToQuadTransform extends Transform {
   }
 }
 
-module.exports = TripleToQuadTransform
+export default TripleToQuadTransform
