@@ -1,69 +1,39 @@
-/* global describe, it */
-
-import assert from 'assert'
+import { rejects, strictEqual } from 'node:assert'
+import { isDuplexStream } from 'is-stream'
+import { describe, it } from 'mocha'
 import rdf from 'rdf-ext'
+import { datasetEqual } from 'rdf-test/assert.js'
 import Readable from 'readable-stream'
 import TripleToQuadTransform from '../index.js'
-
-function expectError (p) {
-  return new Promise((resolve, reject) => {
-    Promise.resolve().then(() => {
-      return p()
-    }).then(() => {
-      reject(new Error('no error thrown'))
-    }).catch(() => {
-      resolve()
-    })
-  })
-}
+import * as ns from './support/namespaces.js'
 
 describe('rdf-source-triple-to-quad', () => {
-  it('should implement a Readable and Writable interface', () => {
-    let tripleToQuad = new TripleToQuadTransform(rdf.namedNode('http://example.org/graph'))
+  it('should implement a duplex stream interface', () => {
+    const stream = new TripleToQuadTransform(ns.ex.graph)
 
-    assert(tripleToQuad.readable)
-    assert(tripleToQuad.writable)
+    strictEqual(isDuplexStream(stream), true)
   })
 
-  it('should forward errors', () => {
-    class ErrorStream extends Readable {
-      _read () {
-        this.emit('error', new Error('test'))
-      }
-    }
+  it('should forward errors', async () => {
+    const errorStream = new Readable({
+      read: () => errorStream.destroy(new Error('test'))
+    })
+    const stream = new TripleToQuadTransform(ns.ex.graph)
+    errorStream.pipe(stream)
 
-    let errorStream = new ErrorStream()
-
-    let tripleToQuad = new TripleToQuadTransform(rdf.namedNode('http://example.org/graph-patched'))
-
-    return expectError(() => {
-      return rdf.dataset().import(errorStream.pipe(tripleToQuad))
+    await rejects(async () => {
+      await rdf.dataset().import(stream)
     })
   })
 
-  it('should patch graph of the quads', () => {
-    let sourceDataset = rdf.dataset([
-      rdf.quad(
-        rdf.namedNode('http://example.org/subject'),
-        rdf.namedNode('http://example.org/predicate'),
-        rdf.literal('object'),
-        rdf.namedNode('http://example.org/graph')
-      )
-    ])
+  it('should patch graph of the quads', async () => {
+    const input = rdf.dataset([rdf.quad(ns.ex.subject, ns.ex.predicate, ns.ex.object, ns.ex.graph)])
+    const expected = rdf.dataset([rdf.quad(ns.ex.subject, ns.ex.predicate, ns.ex.object, ns.ex.graphPatched)])
+    const stream = new TripleToQuadTransform(ns.ex.graphPatched)
+    input.toStream().pipe(stream)
 
-    let expectedDataset = rdf.dataset([
-      rdf.quad(
-        rdf.namedNode('http://example.org/subject'),
-        rdf.namedNode('http://example.org/predicate'),
-        rdf.literal('object'),
-        rdf.namedNode('http://example.org/graph-patched')
-      )
-    ])
+    const result = await rdf.dataset().import(stream)
 
-    let tripleToQuad = new TripleToQuadTransform(rdf.namedNode('http://example.org/graph-patched'))
-
-    return rdf.dataset().import(sourceDataset.toStream().pipe(tripleToQuad)).then((actualDataset) => {
-      assert(expectedDataset.equals(actualDataset))
-    })
+    datasetEqual(result, expected)
   })
 })

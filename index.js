@@ -2,28 +2,23 @@ import rdf from '@rdfjs/data-model'
 import { Transform } from 'readable-stream'
 
 class TripleToQuadTransform extends Transform {
-  constructor (graph, options) {
-    super()
+  constructor (graph, { factory = rdf } = {}) {
+    super({ objectMode: true })
 
-    options = options || {}
-
-    this._writableState.objectMode = true
-    this._readableState.objectMode = true
-
-    this.factory = options.factory || rdf
+    this.factory = factory
     this.graph = graph || this.factory.defaultGraph()
 
-    this.on('pipe', (input) => {
-      input.on('error', (err) => {
+    this.on('pipe', input => {
+      input.on('error', err => {
         this.emit('error', err)
       })
     })
   }
 
-  _transform (quad, encoding, done) {
-    this.push(this.factory.quad(quad.subject, quad.predicate, quad.object, this.graph))
+  _transform (triple, encoding, callback) {
+    const quad = this.factory.quad(triple.subject, triple.predicate, triple.object, this.graph)
 
-    done()
+    callback(null, quad)
   }
 }
 
