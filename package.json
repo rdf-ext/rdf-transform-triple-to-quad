@@ -1,6 +1,6 @@
 {
   "name": "rdf-transform-triple-to-quad",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "RDF/JS Source which transforms a triple stream to a quad stream",
   "main": "index.js",
   "type": "module",
